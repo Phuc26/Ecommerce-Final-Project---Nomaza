@@ -16,5 +16,20 @@ namespace views;
 </form>
 
 
+
+<?php
+class SellerLogin{
+
+}
+?>
+
+
+
+
+
+
+
+
+
 </body>
 </html>
