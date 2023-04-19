@@ -4,10 +4,11 @@ namespace views;
 
 
 <html>
-<head>
 
+<head>
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <style>
+
 body {font-family: Arial, Helvetica, sans-serif;}
 form {border: 3px solid #f1f1f1;}
 
@@ -21,45 +22,40 @@ input[type=text], input[type=password] {
 }
 
 button {
-  background-color: #04AA6D;
-  width: 40%;
+  background-color: lightblue;
+  width: 30%;
   color: white;
+  size: 20px;
   padding: 20px 20px;
   margin: 10px 0;
-  border: none;
+  border: solid;
   cursor: pointer;
-  width: 100%;
 }
 
 button:hover {
   opacity: 0.8;
 }
 
-
 .container {
   padding: 50px;
+  width: auto;
 }
-
-
-
-
-
-
 
 </style>
 </head>
 
 
 <body>
-</br>
-<center><h1>Buyer Login</h1></center>
+<br>
+<center><h1>Buyer Login</h1>
+<br>
 <form action="" method="post">
- <center> <div class="container">
-  <label for="username">username:</label><br>
+<div class="container">
+  <label for="username">Enter username:</label><br>
   <input type="text" id="username" name="username"><br>
-  <label for="password">password:</label><br>
+  <label for="password">Enter password:</label><br>
   <input type="password" id="password" name="password"><br><br>
- <button type="submit"> Login</button>
+  <button type="submit">Login</button>
 
 </div></center>
 </form>
