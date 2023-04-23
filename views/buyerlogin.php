@@ -65,6 +65,32 @@ button:hover {
 <?php
 class BuyerLogin{
 
+private $user;
+private $userMessage;
+
+function __construct($user){
+  $this->user = $user;
+
+  if($this->user->login()){
+    $this->
+
+    header('Location:http://localhost/Ecommerce-Final-Project---Nomaza/index.php?resource=buyer&action=list');
+  }else{
+    $this->$userMessage = 'Unable to login, please retry password or username';
+    $this->render();
+  }
+}
+
+function render(){
+  if(  ($this->user->getUsername() !== null)&& ($this->user->gePassword() !== null))
+  echo $this->userMessage;
+}
+
+
+
+
+}
+
 }
 ?>
 
