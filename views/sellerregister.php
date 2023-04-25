@@ -62,8 +62,7 @@ button:hover {
   <input type="text" id="username" name="username"><br>
   <label for="password">Enter a password:</label><br>
   <input type="password" id="password" name="password"><br><br>
-  <label for="enable2fa"> Do you want to enable 2-FA?</label>
-  <input type="checkbox" id="enable2fa" name="enable2fa" value="true"><br><br>
+
   <button type="submit">Register</button>
 
 </div></center>

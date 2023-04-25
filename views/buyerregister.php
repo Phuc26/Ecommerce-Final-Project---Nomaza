@@ -23,7 +23,7 @@ input[type=text], input[type=password] {
 }
 
 button {
-  background-color: lightblue;
+  background-color: black;
   width: 30%;
   color: white;
   size: 20px;
@@ -56,25 +56,54 @@ button:hover {
 <center><h1>Buyer Registration</h1>
 <form action="" method="post">
 <div class="container">
-  <label for="name">Enter your name:</label><br>
-  <input type="text" id="name" name="name"><br>
-  <label for="name">Enter your phone number:</label><br>
-  <input type="text" id="phone" name="phone"><br>
-  <label for="username">Enter a username:</label><br>
-  <input type="text" id="username" name="username"><br>
-  <label for="password">Enter a password:</label><br>
-  <input type="password" id="password" name="password"><br><br>
-  <label for="enable2fa"> Do you want to enable 2-FA?</label>
-  <input type="checkbox" id="enable2fa" name="enable2fa" value="true"><br><br>
+  <label for="buyer_username">Enter your username:</label><br>
+  <input type="text" id="buyer_username" name="buyer_username"><br>
+  <label for="buyer_passwordhash">Enter your password:</label><br>
+  <input type="password" id="buyer_passwordhash" name="buyer_passwordhash"><br>
+  <label for="buyer_name">Enter your name:</label><br>
+  <input type="text" id="buyer_name" name="buyer_name"><br>
+  <label for="buyer_phone">Enter your phone number:</label><br>
+  <input type="text" id="buyer_phone" name="buyer_phone"><br>
+  <label for="buyer_street">Enter your street:</label><br>
+  <input type="text" id="buyer_street" name="buyer_street"><br>
+  <label for="buyer_postalcode">Enter your postal code:</label><br>
+  <input type="text" id="buyer_postalcode" name="buyer_postalcode"><br>
+
+
+
   <button type="submit">Register</button>
 
 </div></center>
 </form>
+
+
 
 <center><h2> Already registered?</h2>
 <button type a href="http://localhost/Ecommerce-Final-Project---Nomaza/index.php?resource=buyer&action=login">Login Here</a></center>
 
 
 
+
+<?php
+
+class BuyerRegister{
+
+  private $user;
+
+  function __construct($user){
+
+    $this->user = $user;
+
+      if($this->user->create()){
+
+        $this->user->getMembershipProvider()->create();
+  
+        header("location: http://localhost/hrapp/index.php?resource=buyer&action=register");
+
+      }
+  }
+}
+
+?>
 </body>
 </html>

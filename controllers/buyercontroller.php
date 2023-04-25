@@ -5,9 +5,7 @@ namespace controllers;
 
 require(dirname(__DIR__)."/models/buyer.php");
 
-require(dirname(__DIR__)."/models/user.php");
-
-class EmployeeController{
+class BuyerController{
 
     private $user;
 
@@ -25,14 +23,14 @@ class EmployeeController{
 
                 $buyers = $buyer->getAll();
                
-                $this->user = new \models\User();
+                $this->user = new \models\Buyer();
                
                 if(isset($_COOKIE)){
-                    if(isset($_COOKIE['hrappuser'])){
+                    if(isset($_COOKIE['projectuser'])){
 
-                        $username = $_COOKIE['hrappuser'];
+                        $username = $_COOKIE['projectuser'];
                       
-                        $this->user = $this->user->getUserByUsername($username)[0];
+                        $this->user = $this->user->getUserByUsername($buyer_username)[0];
 
                     }
                 }

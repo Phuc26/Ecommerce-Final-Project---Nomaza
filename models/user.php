@@ -10,7 +10,6 @@ class User{
     public $id;
     private $username;
     private $password;
-    private $enabled2fa = false;
     private $otpsecretkey;
 
     private $dbConnection;
@@ -30,14 +29,14 @@ class User{
     function create(){
 
 
-        $query = "INSERT INTO users (username, password, enabled2fa) VALUES(:username, :password, :enabled2fa)";
+        $query = "INSERT INTO users (username, password) VALUES(:username, :password)";
 
         $statement = $this->dbConnection->prepare($query);
 
 
         $hashedPassword = password_hash($this->password, PASSWORD_DEFAULT);
 
-        return $statement->execute(['username' => $this->username, 'password'=> $hashedPassword, 'enabled2fa'=> $this->enabled2fa]);
+        return $statement->execute(['username' => $this->username, 'password'=> $hashedPassword]);
 
     }
 

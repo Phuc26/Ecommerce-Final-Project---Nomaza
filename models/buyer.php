@@ -1,21 +1,42 @@
 <?php
 require(dirname(__DIR__)."/core/dbconnection.php");
 
+require(dirname(__DIR__)."/core/membershipprovider.php");
+
 class Buyer{
-    private $b_id;
-    private $b_username;
-    private $b_passwordhash;
-    private $b_name;
-    private $b_phone;
-    private $b_street;
-    private $b_postalcode;
-    private $b_city;
+    private $buyer_id;
+    private $buyer_username;
+    private $buyer_passwordhash;
+    private $buyer_name;
+    private $buyer_phone;
+    private $buyer_street;
+    private $buyer_postalcode;
+    private $buyer_city;
 
     private $dbConnection;
 
+    private $membershipProvider;
+
     function __construct(){
-        $dbConnection = new DBConnectionManager();
-        $this->dbConnection = $dbConnection->getConnection();
+        $conManager = new \database\DBConnectionManager();
+        $this->dbConnection = $conManager->getConnection();
+        $this->membershipProvider = new \membershipprovider\MembershipProvider($this);
+    }
+
+    function create(){
+       
+
+        $query = "INSERT INTO users (buyer_username, buyer_passwordhash, buyer_name, buyer_phone, buyer_street, buyer_postalcode, buyer_city )
+         VALUES(:buyer_username, :buyer_passwordhash, :buyer_name, :buyer_phone, :buyer_street, :buyer_postalcode, :buyer_city)";
+
+        $statement = $this->dbConnection->prepare($query);
+
+
+        $buyer_passwordhash = password_hash($this->buyer_passwordhash, PASSWORD_DEFAULT);
+
+        return $statement->execute(['buyer_username' => $this->buyer_username, 'buyer_passwordhash'=> $buyer_passwordhash, 'buyer_name' => $this->buyer_name,
+        'buyer_phone' => $this->buyer_phone, 'buyer_street' => $this->buyer_street, 'buyer_postalcode' => $this->buyer_postalcode, 'buyer_city' => $this->buyer_city]);
+
     }
 
     function getAll(){
@@ -33,7 +54,7 @@ class Buyer{
     }
 
     function updateData($updatedData){
-        $SQL = "UPDATE buyer SET buyer_username=:buyer_username, buyer_passwordhash=:buyer_passwordhash, buyer_name=:buyer_name, buyer_phone=:buyer_phone, buyer_street=:buyer_street, buyer_postalcode=:buyer_postalcode, buyer_city=:buyer_city WHERE order_id=:order_id";
+        $SQL = "UPDATE buyer SET buyer_username=:buyer_username, buyer_passwordhash=:buyer_passwordhash, buyer_name=:buyer_name, buyer_phone=:buyer_phone, buyer_street=:buyer_street, buyer_postalcode=:buyer_postalcode, buyer_city=:buyer_city WHERE buyer_id=:buyer_id";
         $stmt = $this->dbConnection->prepare($SQL);
         $stmt->execute([
             'buyer_username' => $updatedData[0],
@@ -46,5 +67,12 @@ class Buyer{
             'buyer_id' => $updatedData[7]
         ]);
     }
+
+    public function getMembershipProvider(){
+
+        return $this->membershipProvider;
+
+    }
+
 }
 ?>

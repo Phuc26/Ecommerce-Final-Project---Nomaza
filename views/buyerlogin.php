@@ -90,8 +90,6 @@ function render(){
 
 
 }
-
-}
 ?>
 
 
@@ -99,6 +97,3 @@ function render(){
 
 </body>
 </html>
-
-
-
