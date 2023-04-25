@@ -1,15 +1,14 @@
-<?php
+<?php 
 namespace views;
-
 ?>
 
-<html>
 
+<html>
 
 <head>
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <style>
-  
+
 body {font-family: Arial, Helvetica, sans-serif;}
 form {border: 3px solid #f1f1f1;}
 
@@ -38,7 +37,7 @@ button:hover {
 }
 
 .container {
-  padding: 40px;
+  padding: 50px;
   width: auto;
 }
 
@@ -46,35 +45,60 @@ button:hover {
 </head>
 
 
-
-
-
-
-
 <body>
 <br>
-<center><h1>Buyer Registration</h1>
+<center><h1>Buyer Login</h1>
+<br>
 <form action="" method="post">
 <div class="container">
-  <label for="name">Enter your name:</label><br>
-  <input type="text" id="name" name="name"><br>
-  <label for="name">Enter your phone number:</label><br>
-  <input type="text" id="phone" name="phone"><br>
-  <label for="username">Enter a username:</label><br>
+  <label for="username">Enter username:</label><br>
   <input type="text" id="username" name="username"><br>
-  <label for="password">Enter a password:</label><br>
+  <label for="password">Enter password:</label><br>
   <input type="password" id="password" name="password"><br><br>
-  <label for="enable2fa"> Do you want to enable 2-FA?</label>
-  <input type="checkbox" id="enable2fa" name="enable2fa" value="true"><br><br>
-  <button type="submit">Register</button>
+  <button type="submit">Login</button>
 
 </div></center>
 </form>
 
-<center><h2> Already registered?</h2>
-<button type a href="http://localhost/Ecommerce-Final-Project---Nomaza/index.php?resource=buyer&action=login">Login Here</a></center>
+
+
+<?php
+class BuyerLogin{
+
+private $user;
+private $userMessage;
+
+function __construct($user){
+  $this->user = $user;
+
+  if($this->user->login()){
+    $this->
+
+    header('Location:http://localhost/Ecommerce-Final-Project---Nomaza/index.php?resource=buyer&action=list');
+  }else{
+    $this->$userMessage = 'Unable to login, please retry password or username';
+    $this->render();
+  }
+}
+
+function render(){
+  if(  ($this->user->getUsername() !== null)&& ($this->user->gePassword() !== null))
+  echo $this->userMessage;
+}
+
+
+
+
+}
+
+}
+?>
+
 
 
 
 </body>
 </html>
+
+
+
