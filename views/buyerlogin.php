@@ -73,7 +73,7 @@ function __construct($buyer){
 
   if($this->buyer->login()){
 
-    header('Location:http://localhost/Ecommerce-Final-Project---Nomaza/index.php?resource=buyer&action=index');
+    header('Location: http://localhost/Ecommerce-Final-Project---Nomaza/index.php?resource=buyer&action=index');
   }else{
     $this->buyerMessage = 'Unable to login, please retry password or username';
     $this->render();

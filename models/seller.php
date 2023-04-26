@@ -1,19 +1,19 @@
 <?php
 require(dirname(__DIR__)."/core/dbconnection.php");
 
-class Buyer{
-    private $s_id;
-    private $s_username;
-    private $s_passwordhash;
-    private $s_name;
-    private $s_phone;
-    private $s_balance;
-    private $s_feedback;
+class Seller{
+    private $seller_id;
+    private $seller_username;
+    private $seller_passwordhash;
+    private $seller_name;
+    private $seller_phone;
+    private $seller_balance;
+    private $seller_feedback;
 
     private $dbConnection;
 
     function __construct(){
-        $dbConnection = new DBConnectionManager();
+        $dbConnection = new \database\DBConnectionManager();
         $this->dbConnection = $dbConnection->getConnection();
     }
 
@@ -42,6 +42,115 @@ class Buyer{
             'seller_balance' => $updatedData[4],
             'seller_feedback' => $updatedData[5]
         ]);
+    }
+
+    function login(){
+
+        $verified = false;
+
+        $dbPassword = $this->getBuyerPasswordByUsername();
+
+        if(password_verify($this->buyer_passwordhash, $dbPassword)){
+
+            $verified = true;
+
+        }
+
+        return $verified;
+        
+    }
+
+    function buyerLogout(){
+
+        $this->membershipProvider->logout();
+
+    }
+
+    function getBuyerPasswordByUsername(){
+
+        $query = "SELECT buyer_passwordhash FROM buyer WHERE buyer_username = :buyer_username";
+
+        $statement = $this->dbConnection->prepare($query);
+        
+        $statement->execute(['buyer_username'=> $this->buyer_username]);
+
+        return $statement->fetchColumn(0);
+
+    }
+
+    function getBuyerByUsername($buyer_username){
+
+        $query = "SELECT * FROM buyer WHERE buyer_username = :buyer_username";
+
+        $statement = $this->dbConnection->prepare($query);
+        
+        $statement->execute(['buyer_username'=> $buyer_username]);
+
+
+
+        return $statement->fetchAll(\PDO::FETCH_CLASS, Buyer::class);
+
+    }
+
+    public function setSellerUsername($seller_username){
+
+        $this->seller_username = $seller_username;
+
+    }
+   
+    public function getSellerUsername(){
+
+        return $this->seller_username;
+
+    }
+
+    public function setSellerPassword($seller_passwordhash){
+
+        $this->seller_passwordhash = $seller_passwordhash;
+
+    }
+
+    public function getSellerPassword(){
+
+        return $this->seller_passwordhash;
+
+    }
+
+    public function setSellerName($seller_name){
+
+        $this->seller_name = $seller_name;
+
+    }
+   
+    public function getSellerName(){
+
+        return $this->seller_name;
+
+    }
+
+    public function setSellerPhone($seller_phone){
+        $this->seller_phone = $seller_phone;
+
+    }
+   
+    public function getSellerPhone(){
+
+        return $this->seller_phone;
+
+    }
+
+    public function setSellerBalance($seller_balance){
+        $this->seller_balance = $seller_balance;
+    }
+
+    public function getSellerBalance(){
+
+        return $this->seller_balance;
+
+    }
+
+    public function setSellerFeedback($seller_feedback){
+        $this->seller_feedback = $seller_feedback;
     }
 }
 ?>

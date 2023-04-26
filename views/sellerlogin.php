@@ -76,7 +76,7 @@ function __construct($user){
 
     header('Location:http://localhost/Ecommerce-Final-Project---Nomaza/index.php?resource=seller&action=list');
   }else{
-    $this->$userMessage = 'Unable to login, please retry password or username';
+    $this->userMessage = 'Unable to login, please retry password or username';
     $this->render();
   }
 }

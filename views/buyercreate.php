@@ -68,6 +68,8 @@ button:hover {
   <input type="text" id="buyer_street" name="buyer_street"><br>
   <label for="buyer_postalcode">Enter your postal code:</label><br>
   <input type="text" id="buyer_postalcode" name="buyer_postalcode"><br>
+  <label for="buyer_city">Enter your city:</label><br>
+  <input type="text" id="buyer_city" name="buyer_city"><br>
 
 
 
@@ -97,7 +99,7 @@ class BuyerCreate{
 
     $this->buyer->create();
   
-    header("location: http://localhost/project/index.php?resource=buyer&action=create");
+    header("location: http://localhost/Ecommerce-Final-Project---Nomaza/index.php?resource=buyer&action=create");
   }
 }
 
