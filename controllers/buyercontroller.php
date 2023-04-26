@@ -68,8 +68,7 @@ class BuyerController{
                     }    
                 }
             }
-                
-                $this->buyer = new \models\Buyer();
+        
                
                 if(isset($_COOKIE)){
                     if(isset($_COOKIE['projectuser'])){

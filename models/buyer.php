@@ -20,7 +20,6 @@ class Buyer{
     function __construct(){
         $conManager = new \database\DBConnectionManager();
         $this->dbConnection = $conManager->getConnection();
-
     }
 
     function create(){
