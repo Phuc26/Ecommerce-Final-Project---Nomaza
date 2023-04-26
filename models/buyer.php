@@ -5,6 +5,8 @@ require(dirname(__DIR__)."/core/dbconnectionmanager.php");
 
 require(dirname(__DIR__)."/core/membershipprovider.php");
 
+require(dirname(__DIR__)."/core/membershipprovider.php");
+
 class Buyer{
     private $buyer_id;
     private $buyer_username;
@@ -22,7 +24,6 @@ class Buyer{
     function __construct(){
         $conManager = new \database\DBConnectionManager();
         $this->dbConnection = $conManager->getConnection();
-
     }
 
     function create(){
