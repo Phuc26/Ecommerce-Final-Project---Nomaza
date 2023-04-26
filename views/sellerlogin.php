@@ -82,7 +82,7 @@ function __construct($user){
 }
 
 function render(){
-  if(  ($this->user->getUsername() !== null)&& ($this->user->gePassword() !== null))
+  if(  ($this->user->getUsername() !== null)&& ($this->user->getPassword() !== null))
   echo $this->userMessage;
 }
 

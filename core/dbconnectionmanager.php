@@ -1,4 +1,6 @@
 <?php
+namespace database;
+
 class DBConnectionManager{
     private $username;
     private $password;
@@ -14,8 +16,8 @@ class DBConnectionManager{
         $this->dbname = "project";
 
         try{
-            $this->dbConnection = new PDO("mysql:host=$this->server;dbname=$this->dbname", $this->username, $this->password);
-        }catch(PDOException $e){
+            $this->dbConnection = new \PDO("mysql:host=$this->server;dbname=$this->dbname", $this->username, $this->password);
+        }catch(\PDOException $e){
             print "Error!: " . $e->getMessage() . "<br/>";
         }
     }

@@ -5,7 +5,6 @@ namespace controllers;
 
 require(dirname(__DIR__)."/models/seller.php");
 
-require(dirname(__DIR__)."/models/user.php");
 
 class EmployeeController{
 
@@ -28,9 +27,9 @@ class EmployeeController{
                 $this->user = new \models\User();
                
                 if(isset($_COOKIE)){
-                    if(isset($_COOKIE['hrappuser'])){
+                    if(isset($_COOKIE['projectuser'])){
 
-                        $username = $_COOKIE['hrappuser'];
+                        $username = $_COOKIE['projectuser'];
                       
                         $this->user = $this->user->getUserByUsername($username)[0];
 

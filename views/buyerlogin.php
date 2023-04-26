@@ -22,7 +22,7 @@ input[type=text], input[type=password] {
 }
 
 button {
-  background-color: lightblue;
+  background-color: black;
   width: 30%;
   color: white;
   size: 20px;
@@ -51,10 +51,10 @@ button:hover {
 <br>
 <form action="" method="post">
 <div class="container">
-  <label for="username">Enter username:</label><br>
-  <input type="text" id="username" name="username"><br>
-  <label for="password">Enter password:</label><br>
-  <input type="password" id="password" name="password"><br><br>
+  <label for="buyer_username">Enter username:</label><br>
+  <input type="text" id="buyer_username" name="buyer_username"><br>
+  <label for="buyer_passwordhash">Enter password:</label><br>
+  <input type="password" id="buyer_passwordhash" name="buyer_passwordhash"><br><br>
   <button type="submit">Login</button>
 
 </div></center>
@@ -65,31 +65,28 @@ button:hover {
 <?php
 class BuyerLogin{
 
-private $user;
-private $userMessage;
+private $buyer;
+private $buyerMessage;
 
-function __construct($user){
-  $this->user = $user;
+function __construct($buyer){
+  $this->buyer = $buyer;
 
-  if($this->user->login()){
-    $this->
+  if($this->buyer->login()){
 
-    header('Location:http://localhost/Ecommerce-Final-Project---Nomaza/index.php?resource=buyer&action=list');
+    header('Location:http://localhost/Ecommerce-Final-Project---Nomaza/index.php?resource=buyer&action=index');
   }else{
-    $this->$userMessage = 'Unable to login, please retry password or username';
+    $this->buyerMessage = 'Unable to login, please retry password or username';
     $this->render();
   }
 }
 
 function render(){
-  if(  ($this->user->getUsername() !== null)&& ($this->user->gePassword() !== null))
-  echo $this->userMessage;
+  if(  ($this->buyer->getBuyerUsername() !== null)&& ($this->buyer->getBuyerPassword() !== null))
+  echo $this->buyerMessage;
 }
 
 
 
-
-}
 
 }
 ?>
@@ -99,6 +96,3 @@ function render(){
 
 </body>
 </html>
-
-
-
