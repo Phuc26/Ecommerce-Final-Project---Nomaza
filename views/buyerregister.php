@@ -76,5 +76,47 @@ button:hover {
 
 
 
+<?php
+
+class BuyerRegister{
+
+private $user;
+
+function __construct($user){
+
+$this->user = $user;
+
+if($this->user->login()){
+
+$this->user->getMembershipProvider()->login();
+  
+header("location: http://localhost/project/index.php?resource=user&action=login");
+
+    }
+    
+  }
+}
+
+?>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 </body>
 </html>
