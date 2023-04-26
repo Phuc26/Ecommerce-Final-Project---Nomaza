@@ -3,8 +3,6 @@
 namespace models;
 require(dirname(__DIR__)."/core/dbconnectionmanager.php");
 
-require(dirname(__DIR__)."/core/membershipprovider.php");
-
 class Buyer{
     private $buyer_id;
     private $buyer_username;
@@ -26,10 +24,10 @@ class Buyer{
     }
 
     function create(){
-       
+        //$query = "INSERT INTO buyer (buyer_username, buyer_passwordhash, buyer_name, buyer_phone, buyer_street, buyer_postalcode, buyer_city )";
 
         $query = "INSERT INTO buyer (buyer_username, buyer_passwordhash, buyer_name, buyer_phone, buyer_street, buyer_postalcode, buyer_city )
-         VALUES(:buyer_username, :buyer_passwordhash, :buyer_name, :buyer_phone, :buyer_street, :buyer_postalcode, :buyer_city)";
+        VALUES(:buyer_username, :buyer_passwordhash, :buyer_name, :buyer_phone, :buyer_street, :buyer_postalcode, :buyer_city)";
 
         $statement = $this->dbConnection->prepare($query);
 
@@ -68,12 +66,6 @@ class Buyer{
             'buyer_city' => $updatedData[6],
             'buyer_id' => $updatedData[7]
         ]);
-    }
-
-    public function getMembershipProvider(){
-
-        return $this->membershipProvider;
-
     }
 
     function login(){
@@ -136,15 +128,15 @@ class Buyer{
 
     }
 
-    public function getBuyerPassword(){
-
-        return $this->buyer_passwordhash;
-
-    }
-
     public function setBuyerPassword($buyer_passwordhash){
 
         $this->buyer_passwordhash = $buyer_passwordhash;
+
+    }
+
+    public function getBuyerPassword(){
+
+        return $this->buyer_passwordhash;
 
     }
 
@@ -195,6 +187,16 @@ class Buyer{
 
     }
 
-    
+    public function setBuyerCity($buyer_city){
+
+        $this->buyer_city = $buyer_city;
+
+    }
+
+    public function getBuyerCity(){
+
+        return $this->buyer_city;
+
+    }
 }
 ?>

@@ -7,7 +7,7 @@ require(dirname(__DIR__)."/models/buyer.php");
 
 class BuyerController{
 
-    private $user;
+    private $buyer;
 
     function __construct(){
 
@@ -42,6 +42,8 @@ class BuyerController{
 
                             $this->buyer->setBuyerPassword($_POST['buyer_passwordhash']);
 
+                            //$this->buyer = $this->buyer->getBuyerPassword($_POST['buyer_passwordhash']);
+
                             $this->buyer->$action();
                         }
                     }else if($action == 'create'){
@@ -67,13 +69,17 @@ class BuyerController{
                 }
             }
                 
+                $this->buyer = new \models\Buyer();
                
                 if(isset($_COOKIE)){
                     if(isset($_COOKIE['projectuser'])){
 
                         $buyer_username = $_COOKIE['projectuser'];
                       
-                        $this->buyer = $this->buyer->getUserByUsername($buyer_username)[0];
+                        $this->buyer = $this->buyer->getBuyerByUsername($buyer_username)[0];
+                        $username = $_COOKIE['projectuser'];
+                      
+                        $this->buyer = $this->buyer->getBuyerByUsername($buyer_username)[0];
 
                     }
                 }

@@ -63,6 +63,14 @@ button:hover {
   <label for="seller_phone">Enter your phone number:</label><br>
   <input type="text" id="seller_phone" name="seller_phone"><br>
   
+  <label for="name">Enter your name:</label><br>
+  <input type="text" id="name" name="name"><br>
+  <label for="name">Enter your phone number:</label><br>
+  <input type="text" id="phone" name="phone"><br>
+  <label for="username">Enter a username:</label><br>
+  <input type="text" id="username" name="username"><br>
+  <label for="password">Enter a password:</label><br>
+  <input type="password" id="password" name="password"><br><br>
 
   <button type="submit">Register</button>
 
@@ -75,7 +83,7 @@ button:hover {
 
 <?php
 
-class BuyerRegister{
+class SellerCreate{
 
   private $seller;
 
@@ -86,7 +94,7 @@ class BuyerRegister{
 
     $this->seller->create();
   
-    header("location: http://localhost/hrapp/index.php?resource=buyer&action=register");
+    header("location: http://localhost/hrapp/index.php?resource=buyer&action=create");
   }
 }
 
