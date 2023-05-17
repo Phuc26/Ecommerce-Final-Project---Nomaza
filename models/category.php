@@ -1,5 +1,6 @@
 <?php
-require(dirname(__DIR__)."/core/dbconnection.php");
+namespace models;
+require_once(dirname(__DIR__)."/core/dbconnectionmanager.php");
 
 class Category{
     private $c_id;
@@ -8,7 +9,7 @@ class Category{
     private $dbConnection;
 
     function __construct(){
-        $dbConnection = new DBConnectionManager();
+        $dbConnection = new \database\DBConnectionManager();
         $this->dbConnection = $dbConnection->getConnection();
     }
 
@@ -16,7 +17,7 @@ class Category{
         $query = "select * from category";
         $statement = $this->dbConnection->prepare($query);
         $statement->execute();
-        return $statement->fetchAll();
+        return $statement->fetchAll(\PDO::FETCH_OBJ);
     }
 
     function getCategory($category_id){

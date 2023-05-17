@@ -2,6 +2,7 @@
 
 namespace models;
 require(dirname(__DIR__)."/core/dbconnectionmanager.php");
+require(dirname(__DIR__)."/core/buyermembershipprovider.php");
 
 class Buyer{
     private $buyer_id;
@@ -13,6 +14,10 @@ class Buyer{
     private $buyer_postalcode;
     private $buyer_city;
 
+    private $enabled2fa = false;
+    private $otpsecretkey;
+    private $otpcodeisvalid;
+
     private $dbConnection;
 
     private $membershipProvider;
@@ -20,11 +25,10 @@ class Buyer{
     function __construct(){
         $conManager = new \database\DBConnectionManager();
         $this->dbConnection = $conManager->getConnection();
+        $this->membershipProvider = new \membershipprovider\BuyerMembershipProvider($this);
     }
 
     function create(){
-        //$query = "INSERT INTO buyer (buyer_username, buyer_passwordhash, buyer_name, buyer_phone, buyer_street, buyer_postalcode, buyer_city )";
-
         $query = "INSERT INTO buyer (buyer_username, buyer_passwordhash, buyer_name, buyer_phone, buyer_street, buyer_postalcode, buyer_city )
         VALUES(:buyer_username, :buyer_passwordhash, :buyer_name, :buyer_phone, :buyer_street, :buyer_postalcode, :buyer_city)";
 
@@ -69,21 +73,18 @@ class Buyer{
 
     function login(){
 
-        $verified = false;
-
-        $dbPassword = $this->getBuyerPasswordByUsername();
-
-        if(password_verify($this->buyer_passwordhash, $dbPassword)){
-
-            $verified = true;
-
+        $buyer = $this->getBuyerByUsername($this->buyer_username);
+        if($buyer){
+            if(password_verify($this->buyer_passwordhash, $buyer->buyer_passwordhash)){
+                return $buyer;
+            }
         }
 
-        return $verified;
+        return null;
         
     }
 
-    function buyerLogout(){
+    function logout(){
 
         $this->membershipProvider->logout();
 
@@ -108,10 +109,7 @@ class Buyer{
         $statement = $this->dbConnection->prepare($query);
         
         $statement->execute(['buyer_username'=> $buyer_username]);
-
-
-
-        return $statement->fetchAll(\PDO::FETCH_CLASS, Buyer::class);
+        return $statement->fetch(\PDO::FETCH_OBJ);
 
     }
 
@@ -197,5 +195,32 @@ class Buyer{
         return $this->buyer_city;
 
     }
+
+    public function getMembershipProvider(){
+
+        return $this->membershipProvider;
+
+    }
+
+    public function setEnabled2FA($enabled2fa){
+        $this->enabled2fa = $enabled2fa;
+    }
+
+    public function getEnabled2FA(){
+        return $this->enabled2fa;
+    }
+
+    public function getOTPsecretkey(){
+
+        return $this->otpsecretkey;
+
+    }
+
+    public function getOTPcodeisvalid(){
+
+        return $this->otpcodeisvalid;
+
+    }
+    
 }
 ?>

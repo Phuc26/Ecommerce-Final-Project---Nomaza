@@ -3,100 +3,87 @@
 
 namespace controllers;
 
-require(dirname(__DIR__)."/models/seller.php");
 
-class SellerController{
+require(dirname(__DIR__) . "/models/seller.php");
 
-    private $user;
+class SellerController
+{
 
-    function __construct(){
+    private $seller;
 
-        
+    function __construct()
+    {
 
-        if(isset($_GET)){
-            
-            if(isset($_GET['action'])){
+        if (isset($_GET)) {
+            session_start();
+            if (isset($_GET['action'])) {
                 $action = $_GET['action'];
 
-
-
-                $viewClass = "\\views\\"."Seller".ucfirst($action);
+                $viewClass = "\\views\\" . "Seller" . ucfirst($action);
 
                 $seller = new \models\Seller();
 
-                $seller = $seller->getAll();
-               
+                $sellers = $seller->getAll();
+
                 $this->seller = new \models\Seller();
 
-                if(isset($_POST)){
-                    if(isset($_POST['buyer_username']) && isset($_POST['buyer_passwordhash']) && ($action == 'login' || $action == 'create')){
-                        $this->seller->setBuyerUsername($_POST['buyer_username']);
+                if (isset($_POST)) {
+                    if (isset($_POST['seller_username']) && isset($_POST['seller_passwordhash']) &&
+                        ($action == 'login' || $action == 'create')) {
+                        $this->seller->setSellerUsername($_POST['seller_username']);
 
-                        $this->seller->setBuyerPassword($_POST['buyer_passwordhash']);
-                    if($action == 'login'){
-                        if(isset($_POST['buyer_username']) && isset($_POST['buyer_passwordhash']) ){
+                        $this->seller->setSellerPassword($_POST['seller_passwordhash']);
+                        if ($action == 'login') {
+                            if (isset($_POST['seller_username']) && isset($_POST['seller_passwordhash'])) {
+                                $this->seller->setSellerUsername($_POST['seller_username']);
 
-                            $this->seller->setBuyerUsername($_POST['buyer_username']);
 
-                            $this->seller = $this->seller->getBuyerByUsername($_POST['buyer_username']);
+                                $this->seller->setSellerPassword($_POST['seller_passwordhash']);
 
-                            $this->seller->setBuyerPassword($_POST['buyer_passwordhash']);
+                                $sellerData = $this->seller->$action();
+                                if($sellerData){
+                                    $_SESSION['seller'] = $sellerData;
+                                    header('Location:http://localhost/Ecommerce-Final-Project---Nomaza/index.php?resource=product&action=index');
 
-                            $this->seller = $this->seller->getBuyerPassword($_POST['buyer_passwordhash']);
+                                }
 
-                            $this->seller->$action();
+                            }
                         }
-                    }else if($action == 'create'){
-                        if(isset($_POST['buyer_username']) && isset($_POST['buyer_passwordhash']) ){
+                        else if ($action == 'create') {
+                            if (isset($_POST['seller_username']) && isset($_POST['seller_passwordhash'])) {
 
-                            $this->seller->setBuyerUsername($_POST['buyer_username']);
+                                $this->seller->setSellerUsername($_POST['seller_username']);
 
-                            $this->seller->setBuyerPassword($_POST['buyer_passwordhash']);
+                                $this->seller->setSellerPassword($_POST['seller_passwordhash']);
 
-                            $this->seller->setBuyerName($_POST['buyer_name']);
+                                $this->seller->setSellerName($_POST['seller_name']);
 
-                            $this->seller->setBuyerPhone($_POST['buyer_phone']);
+                                $this->seller->setSellerPhone($_POST['seller_phone']);
 
-                            $this->seller->setBuyerStreet($_POST['buyer_street']);
+                                $this->seller->$action();
 
-                            $this->seller->setBuyerPostalCode($_POST['buyer_postalcode']);
+                                header('Location:http://localhost/Ecommerce-Final-Project---Nomaza/index.php?resource=seller&action=login');
 
-                            $this->seller->setBuyerCity($_POST['buyer_city']);
-
-                            $this->seller->$action();
+                            }
                         }
-                    }    
-                }
-            }
-                
-                $this->user = new \models\Seller();
-               
-                if(isset($_COOKIE)){
-                    if(isset($_COOKIE['projectuser'])){
-
-                        $buyer_username = $_COOKIE['projectuser'];
-                      
-                        $this->buyer = $this->buyer->getUserByUsername($buyer_username)[0];
-                        $username = $_COOKIE['projectuser'];
-                      
-                        $this->user = $this->user->getUserByUsername($buyer_username)[0];
-
                     }
                 }
-               
-                
 
-                if(class_exists($viewClass)){
-
-                    $view = new $viewClass($this->seller);
-
-                    $view->render($sellers);
-
+                if($action == "logout"){
+                    session_destroy();
+                    header('Location:http://localhost/Ecommerce-Final-Project---Nomaza/index.php?resource=seller&action=login');
                 }
 
-                
+                if (class_exists($viewClass)) {
+                    $view = new $viewClass($this->seller);
+                    $view->render($seller);
+                }
+
+
+            }
         }
     }
+
 }
-}
+
 ?>

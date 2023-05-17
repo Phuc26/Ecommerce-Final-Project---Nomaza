@@ -1,5 +1,6 @@
 <?php
-require(dirname(__DIR__)."/core/dbconnection.php");
+namespace models;
+require(dirname(__DIR__)."/core/dbconnectionmanager.php");
 
 class Shipping{
     private $sh_id;
@@ -9,7 +10,7 @@ class Shipping{
     private $dbConnection;
 
     function __construct(){
-        $dbConnection = new DBConnectionManager();
+        $dbConnection = new \database\DBConnectionManager();
         $this->dbConnection = $dbConnection->getConnection();
     }
 

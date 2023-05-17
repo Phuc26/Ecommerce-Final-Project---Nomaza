@@ -1,16 +1,50 @@
 <?php
-require(dirname(__DIR__)."/core/dbconnection.php");
+namespace models;
+require_once(dirname(__DIR__)."/core/dbconnectionmanager.php");
 
 class Review{
-    private $r_id;
-    private $r_comment;
-    private $r_rating;
+    private $review_id;
+    private $review_comment;
+    private $review_rating;
+    private $product_id;
+    private $buyer_id;
 
     private $dbConnection;
 
     function __construct(){
-        $dbConnection = new DBConnectionManager();
+        $dbConnection = new \database\DBConnectionManager();
         $this->dbConnection = $dbConnection->getConnection();
+    }
+
+    public function setReviewComment($review_comment){
+        $this->review_comment = $review_comment;
+    }
+
+    public function setReviewRating($review_rating){
+        $this->review_rating = $review_rating;
+    }
+
+    public function setProductId($product_id){
+        $this->product_id = $product_id;
+    }
+
+    public function setBuyerId($buyer_id){
+        $this->buyer_id = $buyer_id;
+    }
+
+    function create()
+    {
+        $query = "INSERT INTO review (review_comment, review_rating, product_id, buyer_id)
+        VALUES(:review_comment, :review_rating, :product_id, :buyer_id)";
+
+        $statement = $this->dbConnection->prepare($query);
+
+        return $statement->execute([
+            'review_comment' => $this->review_comment,
+            'review_rating' => $this->review_rating,
+            'product_id' => $this->product_id,
+            'buyer_id' => $this->buyer_id
+        ]);
     }
 
     function getAll(){

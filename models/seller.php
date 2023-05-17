@@ -1,7 +1,10 @@
 <?php
-require(dirname(__DIR__)."/core/dbconnection.php");
 
-class Seller{
+namespace models;
+require_once(dirname(__DIR__)."/core/dbconnectionmanager.php");
+
+class Seller
+{
     private $seller_id;
     private $seller_username;
     private $seller_passwordhash;
@@ -12,27 +15,50 @@ class Seller{
 
     private $dbConnection;
 
-    function __construct(){
+    private $membershipProvider;
+
+    function __construct()
+    {
         $dbConnection = new \database\DBConnectionManager();
         $this->dbConnection = $dbConnection->getConnection();
     }
 
-    function getAll(){
+    function create()
+    {
+        if($this->seller_username){
+            $query = "INSERT INTO seller (seller_username, seller_passwordhash, seller_name, seller_phone)
+            VALUES(:seller_username, :seller_passwordhash, :seller_name, :seller_phone)";
+
+            $statement = $this->dbConnection->prepare($query);
+
+            $seller_passwordhash = password_hash($this->seller_passwordhash, PASSWORD_DEFAULT);
+
+            return $statement->execute(['seller_username' => $this->seller_username, 'seller_passwordhash' => $seller_passwordhash, 'seller_name' => $this->seller_name,
+            'seller_phone' => $this->seller_phone]);
+        }
+
+
+    }
+
+    function getAll()
+    {
         $query = "select * from seller";
         $statement = $this->dbConnection->prepare($query);
         $statement->execute();
         return $statement->fetchAll();
     }
 
-    function getBuyer($seller_id){
+    function getSeller($seller_id)
+    {
         $query = "select * from seller WHERE seller_id=:seller_id";
         $statement = $this->dbConnection->prepare($query);
-        $statement->execute(['seller_id'=>$seller_id]);
+        $statement->execute(['seller_id' => $seller_id]);
         return $statement->fetchAll();
     }
 
-    function updateData($updatedData){
-        $SQL = "UPDATE buyer SET seller_username=:seller_username, seller_passwordhash=:seller_passwordhash, seller_name=:seller_name, seller_phone=:seller_phone, seller_balance=:buyer_balance, seller_feedback=:seller_feedback WHERE seller_id=:seller_id";
+    function updateData($updatedData)
+    {
+        $SQL = "UPDATE seller SET seller_username=:seller_username, seller_passwordhash=:seller_passwordhash, seller_name=:seller_name, seller_phone=:seller_phone, seller_balance=:buyer_balance, seller_feedback=:seller_feedback WHERE seller_id=:seller_id";
         $stmt = $this->dbConnection->prepare($SQL);
         $stmt->execute([
             'seller_username' => $updatedData[0],
@@ -44,113 +70,133 @@ class Seller{
         ]);
     }
 
-    function login(){
+    function login()
+    {
 
         $verified = false;
 
-        $dbPassword = $this->getBuyerPasswordByUsername();
+        $query = "SELECT * FROM seller WHERE seller_username = :seller_username";
 
-        if(password_verify($this->buyer_passwordhash, $dbPassword)){
+        $statement = $this->dbConnection->prepare($query);
 
-            $verified = true;
-
+        $statement->execute(['seller_username' => $this->seller_username]);
+        $sellerData = $statement->fetch(\PDO::FETCH_OBJ);
+        if($sellerData){
+            if (password_verify($this->seller_passwordhash, $sellerData->seller_passwordhash)) {
+                return $sellerData;
+            }
         }
 
-        return $verified;
-        
+
+        return null;
+
     }
 
-    function buyerLogout(){
+    function sellerLogout()
+    {
 
         $this->membershipProvider->logout();
 
     }
 
-    function getBuyerPasswordByUsername(){
+    function getSellerPasswordByUsername()
+    {
 
-        $query = "SELECT buyer_passwordhash FROM buyer WHERE buyer_username = :buyer_username";
+        $query = "SELECT seller_passwordhash FROM seller WHERE seller_username = :seller_username";
 
         $statement = $this->dbConnection->prepare($query);
-        
-        $statement->execute(['buyer_username'=> $this->buyer_username]);
+
+        $statement->execute(['seller_username' => $this->seller_username]);
 
         return $statement->fetchColumn(0);
 
     }
 
-    function getBuyerByUsername($buyer_username){
+    function getSellerByUsername($seller_username)
+    {
 
-        $query = "SELECT * FROM buyer WHERE buyer_username = :buyer_username";
+        $query = "SELECT * FROM seller WHERE seller_username = :seller_username";
 
         $statement = $this->dbConnection->prepare($query);
-        
-        $statement->execute(['buyer_username'=> $buyer_username]);
 
+        $statement->execute(['seller_username' => $seller_username]);
 
 
         return $statement->fetchAll(\PDO::FETCH_CLASS, Buyer::class);
 
     }
 
-    public function setSellerUsername($seller_username){
+    public function setSellerUsername($seller_username)
+    {
 
         $this->seller_username = $seller_username;
 
     }
-   
-    public function getSellerUsername(){
+
+    public function getSellerUsername()
+    {
 
         return $this->seller_username;
 
     }
 
-    public function setSellerPassword($seller_passwordhash){
+    public function setSellerPassword($seller_passwordhash)
+    {
 
         $this->seller_passwordhash = $seller_passwordhash;
 
     }
 
-    public function getSellerPassword(){
+    public function getSellerPassword()
+    {
 
         return $this->seller_passwordhash;
 
     }
 
-    public function setSellerName($seller_name){
+    public function setSellerName($seller_name)
+    {
 
         $this->seller_name = $seller_name;
 
     }
-   
-    public function getSellerName(){
+
+    public function getSellerName()
+    {
 
         return $this->seller_name;
 
     }
 
-    public function setSellerPhone($seller_phone){
+    public function setSellerPhone($seller_phone)
+    {
         $this->seller_phone = $seller_phone;
 
     }
-   
-    public function getSellerPhone(){
+
+    public function getSellerPhone()
+    {
 
         return $this->seller_phone;
 
     }
 
-    public function setSellerBalance($seller_balance){
+    public function setSellerBalance($seller_balance)
+    {
         $this->seller_balance = $seller_balance;
     }
 
-    public function getSellerBalance(){
+    public function getSellerBalance()
+    {
 
         return $this->seller_balance;
 
     }
 
-    public function setSellerFeedback($seller_feedback){
+    public function setSellerFeedback($seller_feedback)
+    {
         $this->seller_feedback = $seller_feedback;
     }
 }
+
 ?>
